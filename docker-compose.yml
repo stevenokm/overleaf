@@ -49,6 +49,10 @@ services:
             ## Set for SSL via nginx-proxy
             #VIRTUAL_HOST: 103.112.212.22
 
+            # setup nginx proxy
+            SHARELATEX_SECURE_COOKIE: 'true'
+            SHARELATEX_BEHIND_PROXY: 'true'
+
             SHARELATEX_SITE_URL: https://cad64.cs.nthu.edu.tw
             # SHARELATEX_NAV_TITLE: Our ShareLaTeX Instance
             # SHARELATEX_HEADER_IMAGE_URL: http://somewhere.com/mylogo.png
@@ -102,7 +106,7 @@ services:
 
     mongo:
         restart: always
-        image: mongo:4.0
+        image: mongo:4.2
         container_name: mongo
         expose:
             - 27017
