@@ -4,7 +4,7 @@ services:
         restart: always
         # Server Pro users:
         # image: quay.io/sharelatex/sharelatex-pro
-        image: sharelatex/sharelatex
+        image: sharelatex/sharelatex:2.5.2
         container_name: sharelatex
         depends_on:
             mongo:
@@ -12,12 +12,12 @@ services:
             redis:
                 condition: service_started
         ports:
-            - 80:80
+            - 127.0.0.1:4242:80
         links:
             - mongo
             - redis
         volumes:
-            - ~/sharelatex_data:/var/lib/sharelatex
+            - /usr/local/sharelatex/sharelatex_data:/var/lib/sharelatex
             ########################################################################
             ####  Server Pro: Uncomment the following line to mount the docker  ####
             ####             socket, required for Sibling Containers to work    ####
@@ -49,27 +49,27 @@ services:
             ## Set for SSL via nginx-proxy
             #VIRTUAL_HOST: 103.112.212.22
 
-            # SHARELATEX_SITE_URL: http://sharelatex.mydomain.com
+            SHARELATEX_SITE_URL: https://cad64.cs.nthu.edu.tw
             # SHARELATEX_NAV_TITLE: Our ShareLaTeX Instance
             # SHARELATEX_HEADER_IMAGE_URL: http://somewhere.com/mylogo.png
-            # SHARELATEX_ADMIN_EMAIL: support@it.com
+            SHARELATEX_ADMIN_EMAIL: nthu.sclab@gmail.com
 
             # SHARELATEX_LEFT_FOOTER: '[{"text": "Powered by <a href=\"https://www.sharelatex.com\">ShareLaTeX</a> 2016"},{"text": "Another page I want to link to can be found <a href=\"here\">here</a>"} ]'
             # SHARELATEX_RIGHT_FOOTER: '[{"text": "Hello I am on the Right"} ]'
 
-            # SHARELATEX_EMAIL_FROM_ADDRESS: "team@sharelatex.com"
+            SHARELATEX_EMAIL_FROM_ADDRESS: "sclab@cad64.cs.nthu.edu.tw"
 
             # SHARELATEX_EMAIL_AWS_SES_ACCESS_KEY_ID:
             # SHARELATEX_EMAIL_AWS_SES_SECRET_KEY:
 
-            # SHARELATEX_EMAIL_SMTP_HOST: smtp.mydomain.com
-            # SHARELATEX_EMAIL_SMTP_PORT: 587
-            # SHARELATEX_EMAIL_SMTP_SECURE: false
+            SHARELATEX_EMAIL_SMTP_HOST: smtp.net.nthu.edu.tw
+            SHARELATEX_EMAIL_SMTP_PORT: 25
+            SHARELATEX_EMAIL_SMTP_SECURE: 'false'
             # SHARELATEX_EMAIL_SMTP_USER:
             # SHARELATEX_EMAIL_SMTP_PASS:
-            # SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: true
-            # SHARELATEX_EMAIL_SMTP_IGNORE_TLS: false
-            # SHARELATEX_CUSTOM_EMAIL_FOOTER: "This system is run by department x"
+            SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: 'true'
+            SHARELATEX_EMAIL_SMTP_IGNORE_TLS: 'false'
+            SHARELATEX_CUSTOM_EMAIL_FOOTER: "<div>This system is run by SCLab </div>"
 
             ################
             ## Server Pro ##
@@ -107,7 +107,7 @@ services:
         expose:
             - 27017
         volumes:
-            - ~/mongo_data:/data/db
+            - /usr/local/sharelatex/mongo_data:/data/db
         healthcheck:
             test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
             interval: 10s
@@ -121,7 +121,7 @@ services:
         expose:
             - 6379
         volumes:
-            - ~/redis_data:/data
+            - /usr/local/sharelatex/redis_data:/data
 
     # ldap:
     #    restart: always
